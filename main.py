@@ -12,7 +12,7 @@ def home_page():
     return render_template("index.html", posts=blog_data)
 
 
-@app.route("/index.html")
+@app.route("/index")
 def home():
     blogs_api_url = "https://api.npoint.io/45ad8d22103f819531d7"
     blog_response = requests.get(blogs_api_url)
@@ -20,13 +20,21 @@ def home():
     return render_template("index.html", posts=blog_data)
 
 
-@app.route("/about.html")
+@app.route("/about")
 def about_me_page():
     return render_template("about.html")
 
 
-@app.route("/contact.html")
-def contact_me_page():
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+    if request.method == "POST":
+        data = request.form
+        name = data["username"]
+        email = data["email"]
+        phone = data["phone"]
+        message = data["message"]
+
+        return f"<h1>{name} your message was sent successfully.</h1>"
     return render_template("contact.html")
 
 
@@ -41,20 +49,6 @@ def single_post(post_id):
         if int(post["id"]) == int(post_id):
             the_post = post
     return render_template("post.html", post=the_post)
-
-
-@app.route("/form_entry", methods=["POST"])
-def receive_data():
-    # you can check first to see if the message is from a form
-    if request.method == "POST":
-        data = request.form
-        name = data["username"]
-        email = data["email"]
-        phone = data["phone"]
-        message = data["message"]
-        msg = "Message successfully sent!"
-
-        return f"<h1>{name} Your Message was Successfully Sent</h1>"
 
 
 if __name__ == "__main__":
