@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 
 app = Flask(__name__)
@@ -41,6 +41,20 @@ def single_post(post_id):
         if int(post["id"]) == int(post_id):
             the_post = post
     return render_template("post.html", post=the_post)
+
+
+@app.route("/form_entry", methods=["POST"])
+def receive_data():
+    # you can check first to see if the message is from a form
+    if request.method == "POST":
+        data = request.form
+        name = data["username"]
+        email = data["email"]
+        phone = data["phone"]
+        message = data["message"]
+        msg = "Message successfully sent!"
+
+        return f"<h1>{name} Your Message was Successfully Sent</h1>"
 
 
 if __name__ == "__main__":
