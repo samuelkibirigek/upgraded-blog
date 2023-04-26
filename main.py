@@ -33,8 +33,9 @@ def contact():
         email = data["email"]
         phone = data["phone"]
         message = data["message"]
+        msg = f"{name} message sent."
 
-        return f"<h1>{name} your message was sent successfully.</h1>"
+        return render_template('contact.html', message=msg)
     return render_template("contact.html")
 
 
